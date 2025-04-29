@@ -1,23 +1,25 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [quote, setQuote] = useState('');
+
+  const fetchQuote = async () => {
+    try {
+      const res = await fetch('https://vitamin10-ol3a.onrender.com/api/quote');
+      const data = await res.json();
+      setQuote(data.quote);
+    } catch (err) {
+      console.error('Failed to fetch quote:', err);
+      setQuote('Error fetching quote.');
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Quote of the Day</h1>
+      <button onClick={fetchQuote}>Get Quote</button>
+      <p>{quote}</p>
     </div>
   );
 }
